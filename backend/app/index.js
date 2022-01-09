@@ -1,4 +1,4 @@
-// Starter code
+// Begin Starter code
 // const Dragon = require("./dragon.js");
 
 // const fooey = new Dragon({
@@ -41,13 +41,28 @@
 // }, 15000);
 // End Generation Test
 
-// Begin Engine test
-const GenerationEngine = require("./engine.js");
+const express = require("express");
+const GenerationEngine = require("./generation/engine.js");
+const dragonRouter = require("./api/dragon.js");
+const generationRouter = require("./api/generation.js");
 
+const app = express();
 const engine = new GenerationEngine();
+
+//Cannot use circular routing, therefore express provides "locals"
+app.locals.engine = engine;
+
+app.use("/dragon", dragonRouter);
+app.use("/generation", generationRouter);
 
 engine.start();
 
-setTimeout(() => {
-    engine.stop();
-}, 20000);
+
+
+
+module.exports = app;
+
+
+
+
+
